@@ -1,5 +1,7 @@
 # Registro de verificación
 
+> Antecedente histórico anterior a la separación pública. No es una instrucción vigente ni acredita el estado actual. Priorizar README.md, AGENTS.md y [STATUS.md](STATUS.md); no ampliar este archivo con nuevos registros de fase.
+
 Este documento evita que el proyecto acumule afirmaciones técnicas o históricas sin evidencia.
 
 ## Plantilla

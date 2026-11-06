@@ -2,6 +2,10 @@
 
 Fecha de revisión documental: 2026-09-22. Este registro autoriza investigación, no ingestión automática. Cada dataset/colección necesita una ficha de alta y una prueba acotada antes de publicación.
 
+## Alcance del corte público
+
+Al 6 de noviembre de 2026 no se aprueba una nueva fuente por esta revisión documental. SII, ingeniería sísmica y astronomía son temas candidatos: hay que identificar objetos concretos, responsables, fecha y permisos. La mención de una institución o la disponibilidad de su web no autoriza descarga continua ni redistribución. Conservar las revisiones anteriores y añadir cada nueva decisión con fecha, alcance y motivo.
+
 ## Estados
 
 - `candidate`: sitio/documentación identificados; conector no aprobado.

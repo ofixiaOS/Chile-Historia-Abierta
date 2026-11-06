@@ -1,5 +1,7 @@
 # Reauditoría estratégica — 2026-09-22
 
+> Antecedente histórico anterior a la separación pública. No es una instrucción vigente ni acredita el estado actual. Priorizar README.md, AGENTS.md y [STATUS.md](../STATUS.md); no ampliar este archivo con nuevos registros de fase.
+
 ## Alcance y método
 
 Se revisaron `AGENTS.md`, `README.md`, las cuatro reglas de `.cursor/rules`, los documentos de visión, arquitectura, escala, evidencia, fuentes, API, IA, foro, monetización, roadmap, protocolo de alta fidelidad, registro de verificación y los ADR 0001–0002. El directorio inspeccionado no contiene `.git`; por ello no fue posible distinguir cambios locales de una línea base ni ejecutar `git diff --check`. Todo el contenido existente se trató como estado del usuario y no se modificó código.

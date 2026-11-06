@@ -1,5 +1,7 @@
 # Diseño scale-ready
 
+> Diseño de referencia: contiene requisitos y opciones todavía no implementados. Para capacidades actuales y límites, consultar [STATUS.md](STATUS.md) y [architecture.md](architecture.md).
+
 ## Principio
 
 Preparar contratos, límites y observabilidad no significa operar infraestructura distribuida antes de validar el producto. El dominio canónico permanece estable; cachés, réplicas e índices son proyecciones reemplazables.

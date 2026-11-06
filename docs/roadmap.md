@@ -1,116 +1,35 @@
-# Roadmap por evidencia
+# Prioridades de desarrollo
 
-La meta es validar un flujo completo con un corpus pequeño y trazable. Las cifras de fuentes/eventos/series se fijan después del inventario y capacidad editorial; no se usan metas arbitrarias como sustituto de calidad.
+Corte: 6 de noviembre de 2026. Son trabajos pendientes y criterios de aceptación; no una lista de funciones entregadas ni fechas comprometidas. El estado comprobado reside en [STATUS.md](STATUS.md).
 
-## Hito 0 — Contratos y corpus piloto
+## 1. Corregir los contratos de evidencia
 
-### Entregables
+Hacer literal la comprobación de citas y separar su resultado de la autenticidad de fuente, vigencia y revisión de interpretación. Conservar abstención cuando falta evidencia. Revisar los estados y licencias atribuidos a los fixtures para impedir que se confundan con un corpus aprobado.
 
-- esquema de evidencia/revisiones, derechos por artefacto y estado editorial;
-- ficha de alta de fuente y dos conectores simulados con payloads versionados;
-- selección del corpus piloto con preguntas de usuario y controversias reales;
-- wireflow búsqueda → vistas → fuente → gráfico → publicación;
-- OpenAPI inicial y `ChartSpec`/`ExplorationState` versionados;
-- SLO/evaluación/budget preliminares y threat model.
+Criterio de cierre: pruebas negativas rechazan citas alteradas; una cita existente no basta para etiquetar toda la respuesta como documentada. Los límites son visibles en API e interfaz.
 
-### Gate de salida
+## 2. Completar un expediente ciudadano
 
-Cada objeto piloto tiene fuente localizable, derechos revisados, hash, versión y limitaciones. Un revisor puede reproducir al menos un gráfico desde snapshot. Las fuentes sin licencia quedan bloqueadas, no “pendientes invisibles”.
+Pregunta propuesta: «¿Qué facilita el SII al ciudadano y cuáles son sus límites?». Es una elección de alcance, no una afirmación sobre su desempeño. Ingeniería sísmica y astronomía quedan como siguientes temas candidatos; la selección no implica aprobación de fuentes.
 
-## Hito 1 — Explorador público verificable
+Recorrido: pregunta → afirmaciones acotadas → originales y derechos revisados → citas y datos fechados → explicación accesible → revisión humana → publicación con límites y correcciones.
 
-### Entregables
+Criterio de cierre: otra persona puede localizar cada evidencia, distinguir hecho de interpretación y reproducir los cálculos existentes. Si falta un permiso o una fuente, se bloquea la publicación del objeto afectado. Un expediente descriptivo no necesita inventar gráficos o pronósticos.
 
-- AdonisJS 7 modular, PostgreSQL/PostGIS, object storage y jobs detrás de interfaces;
-- búsqueda lexical y filtros;
-- timeline, mapa, lista y panel de acontecimiento sincronizados;
-- fuentes/segmentos, controversias y series relacionadas;
-- API pública `/v1`, OpenAPI, paginación, ETag y read role;
-- accesibilidad y móvil para el flujo de lectura.
+## 3. Resolver lectura y corrección
 
-### Gate de salida
+Ofrecer búsqueda, lectura de evidencia, fecha de corte, metodología y forma de señalar errores. Conservar la revisión citada y explicar qué cambió; no sustituir silenciosamente el texto publicado.
 
-Pruebas funcionales y negativas cubren derechos restringidos, fuente caída, query costosa, fecha/geometría incierta, borrador filtrado y corrección. Prueba de carga documenta línea base sin prometer producción.
+Criterio de cierre: recorrido comprobado en navegador, móvil y teclado; las correcciones y sus motivos son consultables. El proceso de corrección completo sigue pendiente de implementación.
 
-## Hito 2 — Análisis y publicación reproducible
+## 4. Preparar una publicación operable
 
-### Entregables
+Decidir licencia de software y revisar derechos por objeto; probar backup/restauración, configuración de secretos, límites, recuperación y observabilidad. Revisar los avisos de dependencias sin cambios de versión mayor automáticos.
 
-- constructor `ChartSpec` basado en Vega-Lite;
-- publicaciones `dato`, `interpretación`, `hipótesis` y `predicción` con validación distinta;
-- snapshots, forks, revisiones, correcciones y tablas accesibles;
-- outbox, proyecciones, DLQ y observabilidad mínima.
+Criterio de cierre: ensayo reproducible y responsable editorial identificado para el corpus publicado. CI verde no sustituye esas comprobaciones. El despliegue requiere una solicitud explícita.
 
-### Gate de salida
+## 5. Ampliar con evidencia de uso
 
-Un tercero reproduce la publicación desde snapshot y obtiene mismo resultado dentro de límites documentados. Manipulación de ejes/unidad/vintage y pérdida de datos generan error o advertencia visible.
+Ampliar a otros temas, regiones o comparaciones internacionales según preguntas reales y capacidad de revisión. Toda comparación debe conservar periodo, unidad, población y definición comparables; toda propuesta de desarrollo identifica supuestos, alternativas y efectos inciertos.
 
-## Hito 3 — Comunidad y moderación
-
-### Entregables
-
-- usuarios, comentarios con evidencia, reportes, apelación y conflictos;
-- reputación contextual y ranking comunitario separado de evidencia;
-- adjuntos seguros, rate limits y herramientas de moderación;
-- política pública y métricas de carga humana.
-
-### Gate de salida
-
-Piloto moderado con ejercicios de spam, doxxing, cita falsa, brigading, conflicto y edición/retractación. No se activa federación.
-
-## Hito 4 — Asistencia con evidencia
-
-### Entregables
-
-- FTS + `pgvector`, corpus/chunks versionados y citas localizables;
-- conjunto de evaluación estratificado;
-- respuestas con desacuerdo, `NO VERIFICADO` y validación de citas;
-- defensa de prompt injection/tool abuse y presupuesto por proveedor.
-
-### Gate de salida
-
-La evaluación mide recuperación, citas, soporte, abstención, latencia y coste. El sistema falla cerrado y sigue ofreciendo búsqueda/fuentes sin LLM.
-
-## Hito 5 — Estadística y pronósticos delimitados
-
-### Entregables
-
-- series/vintages y conceptos SDMX adaptados;
-- baseline, splits temporales, backtesting, intervalos y escenarios;
-- registro de modelo/dataset/código y monitoreo de degradación.
-
-### Gate de salida
-
-Un modelo no se publica como predictivo si no supera el baseline bajo criterio definido. La UI separa pronóstico, escenario y dato observado.
-
-## Hito 6 — Interoperabilidad y escala medida
-
-### Entregables posibles, no comprometidos
-
-- IIIF/PROV-O/JSON-LD/SDMX y snapshots;
-- MCP de solo lectura;
-- réplica, particionamiento, vector tiles, OpenSearch/Qdrant;
-- Jena/Fuseki, Wikibase o GraphRAG experimental;
-- plan institucional y fiscal hosting.
-
-### Gate de entrada
-
-Cada componente cumple ADR 0005: problema medido o requisito externo, benchmark, coste, reversa y no degradación de procedencia.
-
-## Trabajo transversal
-
-- seguridad: SSRF, uploads, prompt injection, abuso, privacidad y secretos;
-- operación: backup/restauración, migraciones, observabilidad y presupuestos;
-- editorial: licencias, revisión, correcciones, conflictos y gobernanza;
-- producto: accesibilidad, móvil, rendimiento y entrevistas de usuario;
-- sostenibilidad: costes reales, concentración y firewall editorial.
-
-## Decisiones aplazadas explícitamente
-
-No GraphRAG, grafo dedicado, Wikibase, Jena, OpenSearch, Qdrant, ActivityPub, Kubernetes ni microservicios en el MVP. “Preparado” significa interfaz y datos exportables, no dependencia instalada.
-
-## Criterio de avance
-
-No avanzar por cantidad de pantallas, series o documentos. Avanzar cuando el hito tiene evidencia versionada, derechos revisados, pruebas negativas, límites publicados y proceso operacional que cierra limpiamente.
-
-Ver [reauditoría](research/strategic-reaudit-2026-09-22.md) y [ADRs](adr/).
+Foro abierto, proveedores LLM, pronósticos y nuevas bases de datos no son requisitos para el primer expediente. Se habilitan solo con una necesidad concreta, permisos y controles comprobados.

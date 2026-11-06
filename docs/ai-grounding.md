@@ -1,5 +1,7 @@
 # RAG, knowledge graph y grounding
 
+> Diseño de referencia: contiene requisitos y opciones todavía no implementados. Para capacidades actuales y límites, consultar [STATUS.md](STATUS.md) y [architecture.md](architecture.md).
+
 ## Objetivo
 
 La IA ayuda a localizar, comparar y explicar evidencia. No determina la verdad, no autoriza publicación y no reemplaza la lectura de la fuente. El producto debe seguir siendo útil si el proveedor LLM no está disponible.

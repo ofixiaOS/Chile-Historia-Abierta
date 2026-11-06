@@ -1,5 +1,7 @@
 # Foro y gráficos reproducibles
 
+> Diseño de referencia: contiene requisitos y opciones todavía no implementados. Para capacidades actuales y límites, consultar [STATUS.md](STATUS.md) y [architecture.md](architecture.md).
+
 ## Decisión de producto
 
 La comunidad se construye como módulo del dominio AdonisJS. Discourse y NodeBB son software maduro, pero introducirlos ahora duplicaría identidad, permisos, revisiones y moderación sin resolver el vínculo central entre claim, evidencia y gráfico. Ver ADR 0007.

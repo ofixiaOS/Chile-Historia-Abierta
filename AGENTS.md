@@ -23,20 +23,19 @@ La plataforma no debe presentar una “historia oficial alternativa”. Debe mos
 
 ## Flujo obligatorio
 
-1. Explorar el estado actual y las fuentes.
-2. Planificar en Markdown antes de editar código.
+1. Leer README.md y docs/STATUS.md; inspeccionar branch, HEAD, status y diff; preservar trabajo previo y contrastar las fuentes pertinentes.
+2. Comunicar un plan breve antes de editar código, sin crear archivos de fase.
 3. Implementar con TypeScript estricto y controladores delgados.
 4. Verificar con pruebas unitarias, funcionales, negativas y `git diff --check`.
 5. Reportar qué quedó comprobado y qué sigue abierto.
 
 ## Arquitectura base
 
-- AdonisJS 7: API, foro, usuarios, moderación y contratos públicos.
-- PostgreSQL/PostGIS: fuente canónica local de datos estructurados, tiempo y geografía.
-- `pgvector` inicialmente: recuperación semántica sin agregar infraestructura prematuramente.
-- Worker Python: OCR, normalización, análisis estadístico y predicción.
-- Frontend: línea de tiempo, mapa, gráficos y foro reproducible.
-- GraphRAG/Jena/Wikibase: fases posteriores, solo con decisión arquitectónica documentada.
+- Monolito modular AdonisJS 7 y TypeScript, con API y explorador HTML servido por el backend.
+- PostgreSQL con adaptadores y vistas públicas; memoria para desarrollo y fixtures exclusivos de tests.
+- Worker Python para procesamiento documental y estadística local.
+- PostGIS, pgvector, almacenamiento de objetos y colas son propuestas, no componentes acreditados de este corte. Evaluarlos solo ante una necesidad comprobada.
+- Consultar docs/architecture.md y platform/start/routes.ts antes de afirmar que un módulo o ruta existe.
 
 ## Preparación para escala
 
@@ -84,8 +83,8 @@ La plataforma no debe presentar una “historia oficial alternativa”. Debe mos
 Antes de afirmar que una fuente, integración, predicción o prueba funciona, inspeccionarla o reproducirla. No hacer commit, push, despliegue, scraping agresivo ni consultas a producción sin solicitud explícita.
 
 
-## Separación de productos y pruebas
+## Documentación y separación de productos
 
 Este repositorio es público y ciudadano. NormaCheck conserva el producto personal privado; no copiar automáticamente su historial, datos, pizarrón ni módulos empresariales. No añadir credenciales, exportaciones personales o textos sin derechos revisados.
 
-Leer README.md y docs/STATUS.md antes de cambiar código. No crear documentos phase-XX.md ni duplicar logs. Usar npm run test:guards y npm run test:isolated desde platform/: PostgreSQL 16 desechable, entorno filtrado, credenciales aleatorias y marcador de identidad comprobado antes de migrar. No usar .env.test ni invocar proveedores pagados. Ejecutar tipos tras modificar TypeScript y exigir lint sin advertencias, build y git diff --check. Un proceso con código cero sin cierre de suites no acredita aprobación. No hacer commit, push o despliegue sin solicitud explícita.
+README.md orienta; AGENTS.md fija reglas; docs/STATUS.md registra hitos consolidados. La visión, arquitectura, API y roadmap deben distinguir implementación, propuesta y antecedente histórico. No crear documentos phase-XX.md ni duplicar logs en docs/verification-register.md. Usar npm run test:guards y npm run test:isolated desde platform/: PostgreSQL 16 desechable, entorno filtrado, credenciales aleatorias y marcador de identidad comprobado antes de migrar. No usar .env.test ni invocar proveedores pagados. Ejecutar tipos tras modificar TypeScript y exigir lint sin advertencias, build y git diff --check. Un proceso con código cero sin cierre de suites no acredita aprobación. No hacer commit, push o despliegue sin solicitud explícita.

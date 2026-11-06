@@ -1,5 +1,7 @@
 # Modelo de evidencia
 
+Este documento define el modelo conceptual y sus requisitos. No todos los campos o flujos enumerados tienen implementación completa. Contrastar con los tipos de dominio, migraciones y [STATUS.md](STATUS.md).
+
 ## Principio
 
 Una entidad o acontecimiento no es una afirmación. Un documento no garantiza que su contenido sea verdadero. Una fuente oficial no elimina sus definiciones, revisiones o sesgos. El sistema conserva por separado lo observado, lo afirmado, quién lo sostuvo, dónde, bajo qué derechos y cómo fue transformado.

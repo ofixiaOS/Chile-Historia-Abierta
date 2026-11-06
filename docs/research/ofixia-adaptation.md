@@ -1,5 +1,7 @@
 # Qué se adaptó de la ingeniería de OFIXIA
 
+> Antecedente histórico anterior a la separación pública. No es una instrucción vigente ni acredita el estado actual. Priorizar README.md, AGENTS.md y [STATUS.md](../STATUS.md); no ampliar este archivo con nuevos registros de fase.
+
 Se revisaron de forma solo lectura `AGENTS.md`, el protocolo de ingeniería de alta fidelidad, la guía de desarrollo y el registro de verificación de OFIXIA Privacy. Se reutilizan criterios generales, no reglas específicas de privacidad o multi-tenant.
 
 ## Adaptado

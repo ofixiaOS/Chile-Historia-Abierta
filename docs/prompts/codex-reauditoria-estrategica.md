@@ -1,5 +1,7 @@
 # Prompt maestro para reauditar Chile Historia Abierta
 
+> Antecedente histórico anterior a la separación pública. No es una instrucción vigente ni acredita el estado actual. Priorizar README.md, AGENTS.md y [STATUS.md](../STATUS.md); no ampliar este archivo con nuevos registros de fase.
+
 Ejecuta este prompt desde la raíz del proyecto `Chile Historia Abierta`, de modo que Codex cargue primero su `AGENTS.md`.
 
 ---

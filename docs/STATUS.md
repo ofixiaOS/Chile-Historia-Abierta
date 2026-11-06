@@ -12,6 +12,19 @@ El ejecutor de pruebas aisladas se trasladó desde el desarrollo privado sin su 
 
 **COMPROBADO localmente:** tipos, lint sin advertencias, build, 7 controles del ejecutor, 215 pruebas unitarias/HTTP y 53 de integración, con cierre de suites sin omisiones y PostgreSQL desechable eliminado; 42 pruebas Python aprobadas. `git diff --check` aprobado antes del commit. `npm audit --omit=dev --audit-level=high` no detectó alertas altas o críticas y reportó 14 moderadas y 1 baja. No se atribuyen a este producto los resultados del repositorio privado.
 
+## Revisión documental del corte público
+
+**COMPROBADO por inspección:** la arquitectura heredada mezclaba implementación y propuestas; la guía API incluía rutas no registradas. Se corrigieron las guías y las instrucciones de agentes, se definió el recorrido editorial ciudadano y se ordenaron las prioridades. No se modificó código de aplicación ni se aprobó corpus.
+
+**Bloqueadores identificados:**
+
+- `CitationVerifier` normaliza mayúsculas, tildes, puntuación y espacios. No hay garantía de coincidencia carácter a carácter en este corte.
+- `AssistanceService` puede asignar `documented` tras esa comparación; no separa verificación de cita de autenticidad, actualidad y revisión de interpretación.
+- Los ejemplos incorporados y sus licencias son fixtures, no evidencia revisada. No hay nuevas fuentes aprobadas.
+- La corrección pública con revisión previa consultable, identidad comunitaria y operación con recuperación comprobada siguen pendientes.
+
+La [CI del commit inicial público](https://github.com/ofixiaOS/Chile-Historia-Abierta/actions/runs/42228534661) terminó aprobada. No acredita los bloqueadores anteriores. Esta revisión es documental; no se repitieron suites de producto sin cambios de código. Se contrastaron las 24 rutas documentadas con las registradas, se comprobaron los enlaces relativos de los documentos modificados y se ejecutó `git diff --check`.
+
 ## Próximo trabajo
 
 - Revisar fuentes, derechos, transcripciones y metodología de un primer expediente sobre capacidades de Chile.

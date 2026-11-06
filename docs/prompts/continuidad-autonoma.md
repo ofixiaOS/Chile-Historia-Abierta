@@ -1,5 +1,7 @@
 # Prompt reutilizable de continuidad autónoma
 
+> Antecedente histórico anterior a la separación pública. No es una instrucción vigente ni acredita el estado actual. Priorizar README.md, AGENTS.md y [STATUS.md](../STATUS.md); no ampliar este archivo con nuevos registros de fase.
+
 Este prompt sirve para que cualquier IA continúe el proyecto desde su estado real, seleccione el siguiente corte de trabajo y lo implemente sin relajar las reglas de evidencia. Debe ejecutarse desde la raíz de `Chile Historia Abierta`.
 
 Si existe una solicitud concreta, agrégala al final bajo `Objetivo adicional del usuario`. Si no existe, la IA debe escoger el siguiente trabajo mediante el protocolo de priorización incluido.
