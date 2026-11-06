@@ -1,0 +1,21 @@
+{
+  "norma": {
+    "idNorma": "1110037",
+    "tipoNorma": "Ley",
+    "numero": "21045",
+    "titulo": "Crea el Ministerio de las Culturas, las Artes y el Patrimonio",
+    "fechaPromulgacion": "2017-10-05",
+    "fechaPublicacion": "2017-11-03",
+    "organismos": [
+      {
+        "nombre": "Ministerio de Educación"
+      }
+    ],
+    "materias": [
+      "Patrimonio Cultural",
+      "Ministerio de las Culturas, las Artes y el Patrimonio",
+      "Institucionalidad Cultural"
+    ],
+    "resumen": "Crea el Ministerio de las Culturas, las Artes y el Patrimonio como secretaría de Estado encargada de colaborar con el Presidente de la República en el diseño, formulación e implementación de políticas, planes y programas para contribuir al desarrollo cultural constante y armónico del país."
+  }
+}

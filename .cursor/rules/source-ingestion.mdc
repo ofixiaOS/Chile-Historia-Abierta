@@ -1,0 +1,15 @@
+---
+description: Ingesta segura y reproducible de fuentes externas
+globs: '**/*.{ts,py}'
+alwaysApply: false
+---
+
+# Ingesta de fuentes
+
+- Tratar cada proveedor como externo, cambiante y potencialmente incompleto.
+- Aplicar timeout, reintento acotado, rate limit y validación de esquema.
+- Guardar el payload original antes de normalizarlo.
+- Registrar URL, proveedor, versión, licencias de software/dataset/objeto, atribución, política de redistribución, timestamp, hash y transformación.
+- No asumir que HTTP 200 implica datos correctos o completos.
+- Las correcciones crean una nueva versión; no sobrescriben evidencia previa.
+- Las fuentes incompatibles por licencia no se redistribuyen: conservar solo referencia permitida.

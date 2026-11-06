@@ -1,0 +1,16 @@
+---
+description: Convenciones TypeScript y AdonisJS 7
+globs: '**/*.{ts,tsx}'
+alwaysApply: false
+---
+
+# TypeScript y AdonisJS
+
+- TypeScript estricto; cero `any` en código de aplicación.
+- Controladores delgados: validar, delegar a servicios y transformar respuestas.
+- Validar toda entrada externa con VineJS o un esquema equivalente.
+- No retornar modelos ORM directamente; usar DTOs/transformers serializables.
+- Fechas con Luxon o una política temporal centralizada.
+- Usar alias del proyecto e `import type` cuando corresponda.
+- Jobs delegan a servicios y cierran recursos en `finally`.
+- Los errores deben ser tipados, observables y no filtrar secretos.

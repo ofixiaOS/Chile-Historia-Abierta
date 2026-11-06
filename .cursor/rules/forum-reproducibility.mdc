@@ -1,0 +1,15 @@
+---
+description: Foro, gráficos reproducibles y publicaciones con evidencia
+globs: '**/*.{ts,tsx}'
+alwaysApply: false
+---
+
+# Foro reproducible
+
+- Clasifica cada publicación como dato, interpretación, hipótesis o predicción.
+- Guarda la consulta, series, filtros, eventos, transformaciones y versión de datos del gráfico.
+- Etiqueta correlación, inferencia y causalidad por separado.
+- Permite citar fuentes y declarar conflictos de interés.
+- No uses votos como sustituto de evidencia.
+- Conserva historial de ediciones y correcciones.
+- Rechaza o modera citas fabricadas, doxxing, difamación, odio y manipulación engañosa.

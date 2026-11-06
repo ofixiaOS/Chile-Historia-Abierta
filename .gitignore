@@ -1,0 +1,49 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local caches, archives and personal exports
+.pytest_cache/
+.venv/
+venv/
+*.pem
+*.key
+*.p12
+*.pfx
+*.dump
+*.sqlite*
+backups/
+exports/
+
+# Platform dependencies and builds
+platform/node_modules/
+platform/build/
+platform/tmp/*
+!platform/tmp/.gitkeep
+
+# Python worker bytecode and test caches
+__pycache__/
+*.py[cod]
+
+# Environment and secrets (preserving examples and test configs)
+platform/.env
+platform/.env.local
+platform/.env.production.local
+platform/.env.development.local
+*.env
+*.env.*
+!platform/.env.example
+
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

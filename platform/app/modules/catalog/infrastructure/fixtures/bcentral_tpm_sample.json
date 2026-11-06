@@ -1,0 +1,28 @@
+{
+  "Codigo": "0",
+  "Descripcion": "Operación exitosa",
+  "Series": {
+    "descripEsp": "Tasa de Política Monetaria (TPM)",
+    "descripIng": "Monetary Policy Rate (MPR)",
+    "seriesId": "F073.TIR.FON.NO.D",
+    "frecuencia": "DIARIA",
+    "unidad": "PORCENTAJE",
+    "obs": [
+      {
+        "indexDateString": "02-01-2024",
+        "value": "8.25",
+        "statusCode": "OK"
+      },
+      {
+        "indexDateString": "01-02-2024",
+        "value": "7.25",
+        "statusCode": "OK"
+      },
+      {
+        "indexDateString": "03-04-2024",
+        "value": "6.50",
+        "statusCode": "OK"
+      }
+    ]
+  }
+}

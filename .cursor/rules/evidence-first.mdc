@@ -1,0 +1,15 @@
+---
+description: Evidencia, procedencia y límites epistémicos del proyecto
+alwaysApply: true
+---
+
+# Evidencia primero
+
+- Cada afirmación debe tener fuente, fecha, derechos/licencia y estado de evidencia.
+- Verifica por separado licencia de software, dataset y objeto; un repositorio público o una API accesible no implica redistribución permitida.
+- Distingue `documented`, `inferred`, `disputed`, `hypothesis`, `forecast` y `unknown`.
+- No inventes citas, páginas, cifras, causalidades ni resultados de herramientas.
+- Reporta `COMPROBADO`, `PROBABLE` o `NO VERIFICADO` según evidencia observable.
+- Las APIs externas se ingieren y versionan; no son la base canónica en vivo.
+- Conserva payload original, hash, transformación y versión de datos.
+- Votos, reputación, patrocinio y salidas de IA no modifican el estado de evidencia.
