@@ -10,7 +10,7 @@ La dirección editorial propuesta comienza con capacidades de Chile: servicios p
 
 ## Estado
 
-**Prototipo local, no sitio desplegado.** Incluye código de un explorador web, API AdonisJS 7, PostgreSQL y worker Python para evidencia y series. Los ejemplos de prueba no constituyen un corpus histórico o estadístico validado. El verificador heredado normaliza las citas y todavía no comprueba coincidencia carácter a carácter. Incluso una cita literal no acreditaría autenticidad, vigencia ni corrección de una interpretación.
+**Prototipo local, no sitio desplegado.** Incluye código de un explorador web, API AdonisJS 7, PostgreSQL y worker Python para evidencia y series. Los ejemplos de prueba no constituyen un corpus histórico o estadístico validado. El verificador exige presencia literal de la cita y coincidencia del localizador con el fragmento recuperado. Eso no acredita autenticidad, vigencia ni corrección de una interpretación. La asistencia devuelve estados separados y retiene la síntesis generada mientras no exista revisión de interpretación.
 
 El estado y los resultados de la separación están en [docs/STATUS.md](docs/STATUS.md). La documentación histórica conservada puede describir propuestas; no sustituye ese estado.
 

@@ -25,7 +25,7 @@ test.group('Assistance / Stratified Evaluation Suite (Hito 4)', (group) => {
     })
   })
 
-  test('Estrato 1: Consulta fáctica con evidencia documental unívoca produce respuesta verificada con citas exactas', async ({
+  test('Estrato 1: Consulta fáctica con evidencia documental unívoca conserva citas exactas sin validar la síntesis', async ({
     assert,
   }) => {
     const response = await service.query({
@@ -33,9 +33,10 @@ test.group('Assistance / Stratified Evaluation Suite (Hito 4)', (group) => {
         'Cuál fue la tasa de política monetaria fijada por el Banco Central en enero de 2024?',
     })
 
-    assert.isFalse(response.abstained)
-    assert.isNull(response.abstentionReason)
-    assert.equal(response.evidenceStatus, 'documented')
+    assert.isTrue(response.abstained)
+    assert.equal(response.abstentionReason, 'INTERPRETATION_UNVERIFIED')
+    assert.equal(response.evidenceStatus, 'not_verified')
+    assert.equal(response.verification.citationStatus, 'verified')
     assert.isAbove(response.citations.length, 0)
     assert.isEmpty(response.disagreements)
 
@@ -44,7 +45,7 @@ test.group('Assistance / Stratified Evaluation Suite (Hito 4)', (group) => {
     assert.equal(citation.sourceId, 'bcentral-cl')
     assert.equal(citation.locator.type, 'table')
     assert.include(citation.quoteExcerpt, 'Tasa de Política Monetaria (TPM)')
-    assert.include(response.answer, '8.25% en enero de 2024')
+    assert.include(response.answer, 'NO VERIFICADO')
 
     assert.isAbove(response.metrics.tokensEstimated, 0)
     assert.isAtLeast(response.metrics.latencyMs, 0)
@@ -57,9 +58,10 @@ test.group('Assistance / Stratified Evaluation Suite (Hito 4)', (group) => {
       queryText: 'Cuál fue la tasa de inflación en 1973 según las fuentes históricas y académicas?',
     })
 
-    assert.isFalse(response.abstained)
-    assert.isNull(response.abstentionReason)
-    assert.equal(response.evidenceStatus, 'disputed')
+    assert.isTrue(response.abstained)
+    assert.equal(response.abstentionReason, 'INTERPRETATION_UNVERIFIED')
+    assert.equal(response.evidenceStatus, 'not_verified')
+    assert.equal(response.verification.citationStatus, 'verified')
     assert.isAbove(response.disagreements.length, 0)
 
     const disagreement = response.disagreements[0]

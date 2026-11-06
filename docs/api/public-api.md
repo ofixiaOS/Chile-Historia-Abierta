@@ -50,7 +50,11 @@ Los adaptadores de memoria se inician sin fixtures fuera de tests. Una colecció
 
 Paginación, filtros, unidades, vintages y localizadores deben consultarse en el esquema del recurso correspondiente. GeoJSON usa cursor; varias colecciones usan limit/offset. No se promete un único modelo de paginación para toda la API.
 
-El estado `documented` de una respuesta de asistencia no acredita revisión humana. El comprobador actual normaliza texto y no valida literalidad, autenticidad o soporte semántico; es una brecha pendiente, descrita en [STATUS.md](../STATUS.md).
+La asistencia conserva `evidenceStatus: not_verified` y `abstained: true`: no tiene un mecanismo de revisión de interpretaciones. Si las citas coinciden literalmente con los fragmentos y localizadores, las devuelve, retiene la síntesis y usa `INTERPRETATION_UNVERIFIED`. Si fallan, usa `CITATION_UNVERIFIED` y no devuelve citas parciales.
+
+El objeto obligatorio `verification` distingue `citationStatus` (`not_checked`, `verified`, `failed`) de `sourceAuthenticity`, `sourceCurrency` e `interpretationStatus` (actualmente `unverified`). `verified` solo describe la coincidencia con fragmentos recuperados, no con un original autenticado. La ausencia de evidencia o el rechazo de consulta deja las citas `not_checked`.
+
+Este cambio modifica el contrato anterior: los clientes no deben interpretar la presencia de citas como una respuesta aprobada ni esperar `documented` o `disputed` para la síntesis. Los desacuerdos de los fragmentos se conservan como contexto, sin validar una conclusión.
 
 ## Cache y operación
 

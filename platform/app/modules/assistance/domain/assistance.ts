@@ -1,10 +1,10 @@
-import type { EvidenceStatus } from '#modules/evidence/domain/claim'
 import type { ChunkLocator } from '#modules/assistance/domain/chunk'
 
 export type AbstentionReason =
   | 'EVIDENCE_INSUFFICIENT'
   | 'POTENTIAL_INJECTION_DETECTED'
   | 'CITATION_UNVERIFIED'
+  | 'INTERPRETATION_UNVERIFIED'
   | 'DISPUTE_UNRESOLVED'
   | 'OUT_OF_SCOPE'
 
@@ -41,9 +41,17 @@ export interface AssistanceMetrics {
   readonly modelId: string
 }
 
+export interface AssistanceVerification {
+  readonly citationStatus: 'not_checked' | 'verified' | 'failed'
+  readonly sourceAuthenticity: 'unverified'
+  readonly sourceCurrency: 'unverified'
+  readonly interpretationStatus: 'unverified'
+}
+
 export interface AssistanceResponse {
+  readonly verification: AssistanceVerification
   readonly answer: string
-  readonly evidenceStatus: EvidenceStatus | 'not_verified'
+  readonly evidenceStatus: 'not_verified'
   readonly citations: readonly Citation[]
   readonly disagreements: readonly DisagreementRecord[]
   readonly abstained: boolean

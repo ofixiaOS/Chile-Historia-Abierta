@@ -4,9 +4,9 @@ Corte: 6 de noviembre de 2026. Son trabajos pendientes y criterios de aceptació
 
 ## 1. Corregir los contratos de evidencia
 
-Hacer literal la comprobación de citas y separar su resultado de la autenticidad de fuente, vigencia y revisión de interpretación. Conservar abstención cuando falta evidencia. Revisar los estados y licencias atribuidos a los fixtures para impedir que se confundan con un corpus aprobado.
+**Implementado localmente:** comparación literal de citas y localizadores, estados de verificación separados y retención de la síntesis sin revisión. Las pruebas negativas cubren cambios de texto y una respuesta falsa acompañada de una cita válida.
 
-Criterio de cierre: pruebas negativas rechazan citas alteradas; una cita existente no basta para etiquetar toda la respuesta como documentada. Los límites son visibles en API e interfaz.
+**Pendiente:** revisar originales, autenticidad, actualidad, derechos y soporte de cada interpretación; auditar licencias de fixtures. La asistencia no puede aprobar interpretaciones hasta que exista ese mecanismo. Los expedientes necesitan revisión humana antes de publicarse.
 
 ## 2. Completar un expediente ciudadano
 

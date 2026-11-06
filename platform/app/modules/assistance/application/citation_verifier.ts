@@ -8,21 +8,8 @@ export interface CitationVerificationResult {
   readonly verifiedCitations: readonly Citation[]
 }
 
-function normalizeTextForComparison(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remueve tildes para robustez
-    .replace(/[^\w\s]/g, ' ') // Puntuación a espacios
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
 export class CitationVerifier {
-  /**
-   * Verifica deterministamente cada cita contra el conjunto de chunks canónicos disponibles.
-   * Si alguna cita es falsa, incompleta o alucinada, la verificación falla cerrada.
-   */
+  /** Checks literal presence in retrieved text, not authenticity or semantic support. */
   public verify(
     claimedCitations: readonly LlmClaimedCitation[],
     availableChunks: readonly EvidenceChunk[]
@@ -53,7 +40,7 @@ export class CitationVerifier {
       }
 
       // Verificación de locator
-      if (claim.locatorValue.trim() !== chunk.locator.value.trim()) {
+      if (claim.locatorValue !== chunk.locator.value) {
         return {
           isValid: false,
           reason: `Locator mismatch for chunk ${chunk.id}: claimed "${claim.locatorValue}", actual "${chunk.locator.value}"`,
@@ -62,8 +49,8 @@ export class CitationVerifier {
       }
 
       // Verificación de quoteExcerpt
-      const quoteTrimmed = claim.quoteExcerpt.trim()
-      if (quoteTrimmed.length < 5) {
+      const quote = claim.quoteExcerpt
+      if (quote.trim().length < 5) {
         return {
           isValid: false,
           reason: `Quote excerpt for chunk ${chunk.id} is too short or empty`,
@@ -71,13 +58,10 @@ export class CitationVerifier {
         }
       }
 
-      const normalizedQuote = normalizeTextForComparison(quoteTrimmed)
-      const normalizedChunkText = normalizeTextForComparison(chunk.text)
-
-      if (!normalizedChunkText.includes(normalizedQuote)) {
+      if (!chunk.text.includes(quote)) {
         return {
           isValid: false,
-          reason: `Quote excerpt "${quoteTrimmed}" is not present in the authentic content of chunk ${chunk.id}`,
+          reason: `Quote excerpt "${quote}" is not present in the retrieved content of chunk ${chunk.id}`,
           verifiedCitations: [],
         }
       }
@@ -87,7 +71,7 @@ export class CitationVerifier {
         sourceId: chunk.sourceId,
         sourceName: chunk.sourceName,
         locator: chunk.locator,
-        quoteExcerpt: quoteTrimmed,
+        quoteExcerpt: quote,
       })
     }
 

@@ -32,9 +32,12 @@ export class DeterministicLlmProvider implements LlmProvider {
     for (const chunk of evidenceChunks) {
       let chunkId = chunk.id
       let locatorValue = chunk.locator.value
-      // Tomamos un fragmento de al menos 10 palabras o el texto completo
-      const words = chunk.text.split(/\s+/)
-      let quoteExcerpt = words.slice(0, Math.min(12, words.length)).join(' ')
+      // Slice the original: preserve tabs, line breaks and repeated spaces.
+      const words = [...chunk.text.matchAll(/\S+/g)]
+      const lastWord = words[Math.min(12, words.length) - 1]
+      let quoteExcerpt = lastWord
+        ? chunk.text.slice(0, lastWord.index + lastWord[0].length)
+        : chunk.text
 
       if (this.options.simulateHallucinatedChunkId) {
         chunkId = 'non-existent-chunk-9999'

@@ -51,7 +51,7 @@ test.group('AssistanceService — Orquestación, Gate de Abstención y Citas Ver
     retrievedAt: '2026-09-22T00:00:00.000Z',
   }
 
-  test('responde exitosamente con citas verificables cuando existe evidencia suficiente', async ({
+  test('conserva citas literales y se abstiene de validar la interpretación', async ({
     assert,
   }) => {
     const retriever = new InMemoryChunkRetriever([sampleChunkA])
@@ -64,9 +64,10 @@ test.group('AssistanceService — Orquestación, Gate de Abstención y Citas Ver
       queryText: '¿Cuál fue la tasa de política monetaria en enero de 2024?',
     })
 
-    assert.isFalse(response.abstained)
-    assert.isNull(response.abstentionReason)
-    assert.equal(response.evidenceStatus, 'documented')
+    assert.isTrue(response.abstained)
+    assert.equal(response.abstentionReason, 'INTERPRETATION_UNVERIFIED')
+    assert.equal(response.evidenceStatus, 'not_verified')
+    assert.equal(response.verification.citationStatus, 'verified')
     assert.isAtLeast(response.citations.length, 1)
     assert.equal(response.citations[0].chunkId, 'chunk-bcentral-tpm')
     assert.isAbove(response.metrics.latencyMs, -1)
@@ -147,8 +148,85 @@ test.group('AssistanceService — Orquestación, Gate de Abstención y Citas Ver
       queryText: '¿Cuál fue la inflación en 1973?',
     })
 
-    assert.isFalse(response.abstained)
-    assert.equal(response.evidenceStatus, 'disputed')
+    assert.isTrue(response.abstained)
+    assert.equal(response.evidenceStatus, 'not_verified')
+    assert.equal(response.verification.citationStatus, 'verified')
     assert.isAtLeast(response.disagreements.length, 1)
+  })
+  test('una respuesta falsa con una cita auténtica no se publica ni se clasifica documentada', async ({
+    assert,
+  }) => {
+    const falseAnswer = 'La tasa de interés es 999% y todos los impuestos fueron eliminados.'
+    const service = new AssistanceService({
+      chunkRetriever: new InMemoryChunkRetriever([sampleChunkA]),
+      llmProvider: {
+        async generateAssistedResponse() {
+          return {
+            rawAnswer: falseAnswer,
+            claimedCitations: [
+              {
+                chunkId: sampleChunkA.id,
+                locatorValue: sampleChunkA.locator.value,
+                quoteExcerpt: sampleChunkA.text,
+              },
+            ],
+            tokensEstimated: 10,
+            modelId: 'false-answer-test',
+          }
+        },
+      },
+    })
+    const result = await service.query({ queryText: 'tasa de interés' })
+    assert.isTrue(result.abstained)
+    assert.equal(result.abstentionReason, 'INTERPRETATION_UNVERIFIED')
+    assert.equal(result.evidenceStatus, 'not_verified')
+    assert.notInclude(result.answer, falseAnswer)
+    assert.lengthOf(result.citations, 1)
+    assert.deepEqual(result.verification, {
+      citationStatus: 'verified',
+      sourceAuthenticity: 'unverified',
+      sourceCurrency: 'unverified',
+      interpretationStatus: 'unverified',
+    })
+  })
+
+  test('el proveedor determinista recorta las citas sin alterar espacios del original', async ({
+    assert,
+  }) => {
+    const chunk = {
+      ...sampleChunkA,
+      text: '  La tasa\tde interés\ncon  espacios múltiples se conserva exactamente en esta fuente.',
+    }
+    const provider = new DeterministicLlmProvider()
+    const output = await provider.generateAssistedResponse({
+      query: { queryText: 'tasa de interés' },
+      evidenceChunks: [chunk],
+      systemInstructions: '',
+    })
+    const quote = output.claimedCitations[0].quoteExcerpt
+    assert.isTrue(chunk.text.startsWith(quote))
+    assert.include(quote, '\t')
+    assert.include(quote, '\n')
+    const service = new AssistanceService({
+      llmProvider: provider,
+      chunkRetriever: new InMemoryChunkRetriever([chunk]),
+    })
+    const result = await service.query({ queryText: 'tasa de interés' })
+    assert.equal(result.verification.citationStatus, 'verified')
+    assert.equal(result.citations[0].quoteExcerpt, quote)
+  })
+
+  test('distingue citas fallidas de las que no se comprobaron', async ({ assert }) => {
+    const service = new AssistanceService({
+      llmProvider: new DeterministicLlmProvider({ simulateHallucinatedQuote: true }),
+      chunkRetriever: new InMemoryChunkRetriever([sampleChunkA]),
+    })
+    const failed = await service.query({ queryText: 'tasa de interés' })
+    assert.equal(failed.verification.citationStatus, 'failed')
+    assert.equal(failed.abstentionReason, 'CITATION_UNVERIFIED')
+    assert.isEmpty(failed.citations)
+    const empty = await service.query({ queryText: 'planeta desconocido' })
+    assert.equal(empty.verification.citationStatus, 'not_checked')
+    assert.equal(empty.abstentionReason, 'EVIDENCE_INSUFFICIENT')
   })
 })

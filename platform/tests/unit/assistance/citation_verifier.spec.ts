@@ -91,6 +91,78 @@ test.group('CitationVerifier — Comprobación Determinista de Citas', () => {
 
     const result = verifier.verify(claims, [sampleChunk])
     assert.isFalse(result.isValid)
-    assert.include(result.reason!, 'not present in the authentic content')
+    assert.include(result.reason!, 'not present in the retrieved content')
+  })
+  const exactQuote = 'tasa de interés de política monetaria disminuyó a 6.50%'
+  for (const [label, altered] of [
+    ['mayúsculas', exactQuote.toUpperCase()],
+    ['tildes', exactQuote.replace('interés', 'interes')],
+    ['puntuación', exactQuote.replace('6.50%', '6,50%')],
+    ['espacios', exactQuote.replace(' de ', '  de ')],
+    ['saltos de línea', exactQuote.replace(' de ', '\nde ')],
+    ['composición Unicode', exactQuote.normalize('NFD')],
+    ['espacios añadidos en extremos', `  ${exactQuote}  `],
+    ['solo puntuación', '!!!!!'],
+  ]) {
+    test(`rechaza cambios de ${label} sin normalizar`, ({ assert }) => {
+      const result = verifier.verify(
+        [
+          {
+            chunkId: sampleChunk.id,
+            locatorValue: sampleChunk.locator.value,
+            quoteExcerpt: altered,
+          },
+        ],
+        [sampleChunk]
+      )
+      assert.isFalse(result.isValid)
+      assert.isEmpty(result.verifiedCitations)
+    })
+  }
+
+  test('rechaza un localizador con espacios agregados', ({ assert }) => {
+    const result = verifier.verify(
+      [
+        {
+          chunkId: sampleChunk.id,
+          locatorValue: ` ${sampleChunk.locator.value}`,
+          quoteExcerpt: exactQuote,
+        },
+      ],
+      [sampleChunk]
+    )
+    assert.isFalse(result.isValid)
+  })
+
+  test('conserva exactamente espacios, tabuladores y saltos presentes en el original', ({
+    assert,
+  }) => {
+    const text = '  Texto\tcon  espacios\ny puntuación.  '
+    const result = verifier.verify(
+      [{ chunkId: sampleChunk.id, locatorValue: sampleChunk.locator.value, quoteExcerpt: text }],
+      [{ ...sampleChunk, text }]
+    )
+    assert.isTrue(result.isValid)
+    assert.equal(result.verifiedCitations[0].quoteExcerpt, text)
+  })
+
+  test('una cita inválida descarta también las citas anteriores del lote', ({ assert }) => {
+    const result = verifier.verify(
+      [
+        {
+          chunkId: sampleChunk.id,
+          locatorValue: sampleChunk.locator.value,
+          quoteExcerpt: exactQuote,
+        },
+        {
+          chunkId: sampleChunk.id,
+          locatorValue: sampleChunk.locator.value,
+          quoteExcerpt: 'texto inexistente',
+        },
+      ],
+      [sampleChunk]
+    )
+    assert.isFalse(result.isValid)
+    assert.isEmpty(result.verifiedCitations)
   })
 })

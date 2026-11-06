@@ -18,12 +18,18 @@ El ejecutor de pruebas aisladas se trasladó desde el desarrollo privado sin su 
 
 **Bloqueadores identificados:**
 
-- `CitationVerifier` normaliza mayúsculas, tildes, puntuación y espacios. No hay garantía de coincidencia carácter a carácter en este corte.
-- `AssistanceService` puede asignar `documented` tras esa comparación; no separa verificación de cita de autenticidad, actualidad y revisión de interpretación.
+- **Corregido en el corte siguiente:** `CitationVerifier` exige presencia literal sin normalizar y coincidencia exacta de localizador.
+- **Corregido en el corte siguiente:** la asistencia separa los estados y retiene la síntesis sin revisión; las citas válidas no elevan `evidenceStatus`.
 - Los ejemplos incorporados y sus licencias son fixtures, no evidencia revisada. No hay nuevas fuentes aprobadas.
 - La corrección pública con revisión previa consultable, identidad comunitaria y operación con recuperación comprobada siguen pendientes.
 
 La [CI del commit inicial público](https://github.com/ofixiaOS/Chile-Historia-Abierta/actions/runs/42228534661) terminó aprobada. No acredita los bloqueadores anteriores. Esta revisión es documental; no se repitieron suites de producto sin cambios de código. Se contrastaron las 24 rutas documentadas con las registradas, se comprobaron los enlaces relativos de los documentos modificados y se ejecutó `git diff --check`.
+
+## Verificación literal y abstención de síntesis
+
+Se preservan espacios, tildes, puntuación y composición Unicode al comparar; el proveedor determinista recorta el original sin reconstruirlo. Un fallo descarta el lote completo de citas. API y OpenAPI añaden `verification` y `INTERPRETATION_UNVERIFIED`; la respuesta permanece `not_verified`, con síntesis retenida incluso ante citas válidas. Esto no autentica originales ni verifica vigencia o interpretación.
+
+**COMPROBADO localmente:** 229 pruebas unitarias/HTTP y 53 de integración aprobadas, sin omisiones y con PostgreSQL desechable eliminado; 7 controles del ejecutor, tipos, lint sin advertencias, build y `git diff --check` aprobados. Hay 14 casos nuevos; incluyen alteraciones de cita y una síntesis falsa acompañada de cita válida. La primera ejecución detectó una expectativa incorrecta en un caso nuevo de espacios; se corrigió la prueba y se repitió el ejecutor completo. No cambió el worker Python ni se repitió su suite.
 
 ## Próximo trabajo
 

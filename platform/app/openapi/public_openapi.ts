@@ -1123,6 +1123,7 @@ export const publicOpenApi = {
             type: 'object',
             required: [
               'answer',
+              'verification',
               'evidenceStatus',
               'citations',
               'disagreements',
@@ -1132,17 +1133,26 @@ export const publicOpenApi = {
             ],
             properties: {
               answer: { type: 'string' },
+              verification: {
+                type: 'object',
+                description:
+                  'Literal matching only covers retrieved fragments, not original-source authenticity or interpretation.',
+                required: [
+                  'citationStatus',
+                  'sourceAuthenticity',
+                  'sourceCurrency',
+                  'interpretationStatus',
+                ],
+                properties: {
+                  citationStatus: { type: 'string', enum: ['not_checked', 'verified', 'failed'] },
+                  sourceAuthenticity: { type: 'string', enum: ['unverified'] },
+                  sourceCurrency: { type: 'string', enum: ['unverified'] },
+                  interpretationStatus: { type: 'string', enum: ['unverified'] },
+                },
+              },
               evidenceStatus: {
                 type: 'string',
-                enum: [
-                  'documented',
-                  'inferred',
-                  'disputed',
-                  'hypothesis',
-                  'forecast',
-                  'unknown',
-                  'not_verified',
-                ],
+                enum: ['not_verified'],
               },
               citations: {
                 type: 'array',
@@ -1186,6 +1196,7 @@ export const publicOpenApi = {
                   'EVIDENCE_INSUFFICIENT',
                   'POTENTIAL_INJECTION_DETECTED',
                   'CITATION_UNVERIFIED',
+                  'INTERPRETATION_UNVERIFIED',
                   'DISPUTE_UNRESOLVED',
                   'OUT_OF_SCOPE',
                   null,

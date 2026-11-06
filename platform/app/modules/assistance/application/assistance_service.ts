@@ -1,6 +1,7 @@
 import type {
   AssistanceQuery,
   AssistanceResponse,
+  AssistanceVerification,
   DisagreementRecord,
 } from '#modules/assistance/domain/assistance'
 import type { EvidenceChunk } from '#modules/assistance/domain/chunk'
@@ -139,6 +140,17 @@ export interface AssistanceServiceDependencies {
   readonly citationVerifier?: CitationVerifier
 }
 
+function verificationStatus(
+  citationStatus: AssistanceVerification['citationStatus']
+): AssistanceVerification {
+  return {
+    citationStatus,
+    sourceAuthenticity: 'unverified',
+    sourceCurrency: 'unverified',
+    interpretationStatus: 'unverified',
+  }
+}
+
 export class AssistanceService {
   private readonly llmProvider: LlmProvider
   private readonly chunkRetriever: ChunkRetriever
@@ -162,6 +174,7 @@ export class AssistanceService {
       return {
         answer: `La consulta fue rechazada por contener patrones no permitidos: ${sanitization.reason}`,
         evidenceStatus: 'not_verified',
+        verification: verificationStatus('not_checked'),
         citations: [],
         disagreements: [],
         abstained: true,
@@ -189,6 +202,7 @@ export class AssistanceService {
         answer:
           'NO VERIFICADO: No existe evidencia documental ni estadística en el corpus local para responder a la consulta.',
         evidenceStatus: 'not_verified',
+        verification: verificationStatus('not_checked'),
         citations: [],
         disagreements: [],
         abstained: true,
@@ -225,15 +239,16 @@ export class AssistanceService {
       systemInstructions,
     })
 
-    // 5. Verificación Estricta y Determinista de Citas (Gate de Abstención por Alucinación)
+    // 5. Literal comparison against retrieved fragments only.
     const verification = this.citationVerifier.verify(llmOutput.claimedCitations, candidateChunks)
 
     const elapsed = Math.round(performance.now() - startTime)
 
     if (!verification.isValid) {
       return {
-        answer: `NO VERIFICADO: La respuesta generada no superó la verificación estricta de citas (${verification.reason}). El sistema se abstiene para garantizar rigor epistémico.`,
+        answer: `NO VERIFICADO: La respuesta generada no superó la verificación estricta de citas (${verification.reason}). No se publica la síntesis.`,
         evidenceStatus: 'not_verified',
+        verification: verificationStatus('failed'),
         citations: [],
         disagreements: [],
         abstained: true,
@@ -246,16 +261,16 @@ export class AssistanceService {
       }
     }
 
-    // 6. Determinación de Estado Epistemológico
-    const finalEvidenceStatus = disagreements.length > 0 ? 'disputed' : 'documented'
-
+    // No review mechanism exists for generated interpretations: withhold the synthesis.
     return {
-      answer: llmOutput.rawAnswer,
-      evidenceStatus: finalEvidenceStatus,
+      answer:
+        'NO VERIFICADO: Las citas coinciden literalmente con los fragmentos recuperados. La autenticidad y actualidad de las fuentes y la interpretación no han sido verificadas; consulte las citas. No se publica la síntesis generada.',
+      evidenceStatus: 'not_verified',
+      verification: verificationStatus('verified'),
       citations: verification.verifiedCitations,
       disagreements,
-      abstained: false,
-      abstentionReason: null,
+      abstained: true,
+      abstentionReason: 'INTERPRETATION_UNVERIFIED',
       metrics: {
         latencyMs: elapsed,
         tokensEstimated: llmOutput.tokensEstimated,

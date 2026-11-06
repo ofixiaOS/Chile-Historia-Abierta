@@ -1,7 +1,7 @@
 import { test } from '@japa/runner'
 
 test.group('POST /v1/assistance/query — Consulta Asistida con Evidencia', () => {
-  test('responde exitosamente con citas verificadas ante consulta con evidencia en corpus piloto', async ({
+  test('devuelve citas literales y estados separados sin publicar la síntesis del piloto', async ({
     client,
     assert,
   }) => {
@@ -13,9 +13,15 @@ test.group('POST /v1/assistance/query — Consulta Asistida con Evidencia', () =
     const body = response.body()
 
     assert.isDefined(body.data)
-    assert.isFalse(body.data.abstained)
-    assert.isNull(body.data.abstentionReason)
-    assert.equal(body.data.evidenceStatus, 'documented')
+    assert.isTrue(body.data.abstained)
+    assert.equal(body.data.abstentionReason, 'INTERPRETATION_UNVERIFIED')
+    assert.equal(body.data.evidenceStatus, 'not_verified')
+    assert.deepEqual(body.data.verification, {
+      citationStatus: 'verified',
+      sourceAuthenticity: 'unverified',
+      sourceCurrency: 'unverified',
+      interpretationStatus: 'unverified',
+    })
     assert.isAtLeast(body.data.citations.length, 1)
 
     const citation = body.data.citations[0]
@@ -41,6 +47,7 @@ test.group('POST /v1/assistance/query — Consulta Asistida con Evidencia', () =
     assert.isDefined(body.data)
     assert.isTrue(body.data.abstained)
     assert.equal(body.data.abstentionReason, 'EVIDENCE_INSUFFICIENT')
+    assert.equal(body.data.verification.citationStatus, 'not_checked')
     assert.equal(body.data.evidenceStatus, 'not_verified')
     assert.include(body.data.answer, 'NO VERIFICADO')
     assert.lengthOf(body.data.citations, 0)
@@ -95,5 +102,11 @@ test.group('POST /v1/assistance/query — Consulta Asistida con Evidencia', () =
     assert.isDefined(openapi.paths['/v1/assistance/query'])
     assert.isDefined(openapi.components.schemas['AssistanceQueryRequest'])
     assert.isDefined(openapi.components.schemas['AssistanceQueryResponse'])
+    const data = openapi.components.schemas.AssistanceQueryResponse.properties.data
+    assert.include(data.required, 'verification')
+    assert.deepEqual(data.properties.evidenceStatus.enum, ['not_verified'])
+    assert.deepEqual(data.properties.verification.properties.interpretationStatus.enum, [
+      'unverified',
+    ])
   })
 })

@@ -44,7 +44,7 @@ Las pruebas usan PostgreSQL desechable y un marcador de identidad antes de migra
 
 ## Brechas relevantes
 
-El verificador de citas normaliza mayúsculas, tildes, puntuación y espacios; no verifica coincidencia literal. El servicio de asistencia puede asignar `documented` después de superar ese control: no equivale a revisión del contenido. Estos contratos requieren corrección antes de presentar respuestas como evidencia verificada.
+El verificador exige coincidencia literal de cita y localizador con los fragmentos recuperados. La asistencia separa esa comprobación de autenticidad, actualidad e interpretación, que permanecen sin verificar. Retiene la síntesis generada y conserva las citas válidas; no asigna `documented` a la respuesta. Sigue pendiente un mecanismo de revisión de originales e interpretaciones.
 
 No se identificaron migraciones de extensiones PostGIS o pgvector. Tampoco se acredita almacenamiento S3, una cola distribuida, ingestión continua, identidad comunitaria individual ni un proceso completo de corrección pública.
 

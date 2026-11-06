@@ -174,8 +174,9 @@ test.group('PostgresChunkRetriever (Integration PostgreSQL)', () => {
       queryText: 'Cuál fue la tasa de política monetaria en enero de 2024 según el Banco Central?',
     })
 
-    assert.isFalse(response.abstained)
-    assert.equal(response.evidenceStatus, 'documented')
+    assert.isTrue(response.abstained)
+    assert.equal(response.evidenceStatus, 'not_verified')
+    assert.equal(response.verification.citationStatus, 'verified')
     assert.isAbove(response.citations.length, 0)
     assert.equal(response.citations[0].chunkId, 'chunk-bcentral-tpm-2024')
     assert.equal(response.citations[0].locator.value, 'F073.TIR.FON.NO.D')
